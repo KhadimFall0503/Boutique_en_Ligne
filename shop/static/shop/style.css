@@ -41,6 +41,9 @@ body {
     display: block;
     margin-top: 0;
 }
+.heros{
+    width: 350px;
+}
 
 /* Cartes produits */
 .card {

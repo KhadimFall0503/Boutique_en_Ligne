@@ -1,11 +1,27 @@
 {% extends 'shop/base.html' %}
+{% load static%}
 
 {% block title %}
     Accueil - Ma Boutique
 {% endblock %}
 
 {% block content %}
-<div class="container pt-5" id="products">
+<div class="container bg-white p-4 rounded-3 shadow-md">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-md-7  text-center text-md-start mb-4 mb-md-0">
+            <h1 class="fw-bold fs-2 mb-3">Découvrez les meilleures offres sur des produits
+                de qualité supérieure</h1>
+            <p>Découvrez une large sélection de produits de qualité à des prix imbattables. Que vous recherchiez des vêtements tendance, de l’électronique, des accessoires ou des articles pour la maison, nous avons tout ce qu’il vous faut.</p>
+        </div>
+        <div class="col-md-5">
+           <img src="{% static 'shop/images/Shop.jpg' %}" alt="Boutique en ligne" class="img-fluid heros rounded-3 shadow-sm">
+        </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container pt-5 mt-5"">
     <h2 class="text-center fw-bold mb-4">Nos Différents Produits</h2>
     <div class="row">
         {% for product in product_objects %}
