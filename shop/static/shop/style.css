@@ -1,0 +1,13 @@
+
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0; /* éviter le saut */
+}
+
+.fixed-image {
+    height: 200px;
+    object-fit: cover;
+}
+
+
+
