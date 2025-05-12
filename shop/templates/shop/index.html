@@ -1,44 +1,29 @@
 {% extends 'shop/base.html' %}
-{% load static %}
 
-{% block title%}
-    Acceuil-Ma Boutique
-{%endblock%}
+{% block title %}
+    Accueil - Ma Boutique
+{% endblock %}
+
 {% block content %}
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-12">
-            <form class="card card-sm" method="POST" action="">
-                <div class="card-body row no-gutters align-items-center">
-                    <div class="col">
-                        <input type="search" name="item-name" class="form-control" placeholder="Veuillez entrer le produit à rechercher">
-                    </div>
-                    <div class="col-auto">
-                        <input type="submit" value="Rechercher" class="btn btn-success">
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="container mt-4">
+<div class="container pt-5" id="products">
+    <h2 class="text-center mb-4">Produits en Vedette</h2>
     <div class="row">
         {% for product in product_objects %}
-        <div class="col-md-3 mb-4">
-            <div class="card h-100">
-               <img src="{{ product.image }}" class="card-img-top img-fluid fixed-image" alt="{{ product.title }}">
-                <div class="card-body">
-                    <h5 class="card-title">{{ product.title }}</h5>
-                    <p class="card-text">{{ product.description }}</p>
-                    <div class="d-flex justify-content-between">
-                        <a href="#" class="btn btn-warning">Voir</a>
-                        <button class="btn btn-success">Ajouter</button>
+            <div class="col-sm-6 col-md-4 col-lg-3 mb-4 d-flex">
+                <div class="card product-card shadow-sm h-100 w-100">
+                    <img src="{{ product.image }}" alt="{{ product.title }}" class="card-img-top product-image" />
+                    <div class="card-body d-flex flex-column text-center">
+                        <h5 class="card-title">{{ product.title }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <p class="fw-bold text-primary">{{ product.price }} €</p>
+                        <div class="d-flex justify-content-between mt-auto">
+                            <button class="btn btn-primary w-48">Ajouter</button>
+                            <button class="btn btn-outline-secondary w-48">Voir</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         {% endfor %}
     </div>
 </div>
-{% endblock content %}
+{% endblock %}
