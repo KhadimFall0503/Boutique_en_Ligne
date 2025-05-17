@@ -1,0 +1,14 @@
+{% extends 'shop/base.html'%}
+
+{% block title %}
+ Detail - Ma Boutique
+
+{% endblock%}
+
+{% block content %}
+    <img src="{{ detail.image }}" alt="{{ deatil.title }}" class="card-img-top product-image" />
+     <h2 class="card-title pt-3">{{ detail.title }}</h2>
+    <p class="card-text text-center lead">{{ detail.description }}</p>
+    <p class="fw-bold text-primary text-center">{{ detail.price }} €</p>
+
+{% endblock %}

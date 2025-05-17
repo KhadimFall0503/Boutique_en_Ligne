@@ -64,11 +64,12 @@ body {
 
 /* Image du produit */
 .product-image {
-    height: 250px;
+    height: 300px;
     object-fit: cover;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
 }
+
 
 /* Titre de la carte */
 .card-title {
@@ -145,4 +146,7 @@ footer a:hover {
         flex: 0 0 100%;
         max-width: 100%;
     }
+}
+.kkk{
+    max-width: 100%;
 }

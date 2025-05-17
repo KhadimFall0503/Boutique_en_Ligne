@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container bg-white p-4 rounded-3 shadow-md">
+<section class="container bg-white p-4 rounded-3 shadow-md">
     <div class="row d-flex justify-content-center align-items-center">
         <div class="col-md-7  text-center text-md-start mb-4 mb-md-0">
             <h1 class="fw-bold fs-2 mb-3">Découvrez les meilleures offres sur des produits
@@ -18,10 +18,24 @@
         </div>
 
         </div>
-    </div>
-</div>
+    </section>
+    <section class="pt-5">
+        <div class="container">
+            <div class="row d-flex ">
+                <div class="col-md-6">
+                    <img src="{% static 'shop/images/acc.jpg'%}" alt="" class="img-fluid ">
+                </div>
+                <div class="col-md-6">
+                    <img src="{% static 'shop/images/montre.jpg' %}" alt="" class="w-100">
+                    
+                </div>
+            </div>
+        </div>
+    </section>
 
-<div class="container pt-5 mt-5"">
+
+
+<section class="container pt-5 mt-5"">
     <h2 class="text-center fw-bold mb-4">Nos Différents Produits</h2>
     <div class="row">
         {% for product in product_objects %}
@@ -34,12 +48,31 @@
                         <p class="fw-bold text-primary">{{ product.price }} €</p>
                         <div class="d-flex justify-content-between mt-auto">
                             <button class="btn btn-primary w-48">Ajouter</button>
-                            <button class="btn btn-outline-secondary w-48">Voir</button>
+                            <a class="btn btn-outline-secondary w-48">Voir</a>
                         </div>
                     </div>
                 </div>
             </div>
         {% endfor %}
     </div>
-</div>
+</section>
+<section class="pt-5">
+    <div class="container">
+        <h3 class="text-center fw-bold">À Propos de Xadim-Shop</h3>
+        <div class="row d-flex justify-content-center pt-5">
+            <div class="col-md-6">
+                <img src="{% static 'shop/images/dg.jpg'%}" alt="" class="img-fluid ">
+            </div>
+            <div class="col-md-6">
+                <p class="lead fw-bold">
+                    À propos ShopEase
+                    Chez ShopEase, nous croyons qu’un bon shopping commence par une expérience fluide et agréable. C’est pourquoi nous mettons à votre disposition une large gamme de produits soigneusement sélectionnés, à des prix compétitifs, avec une livraison rapide et un service client fiable.
+                </p>
+                <p class="lead fw-bold">
+                    Que vous soyez à la recherche d’électronique, d’accessoires ou d’articles pour la maison, ShopEase est là pour vous simplifier la vie.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
