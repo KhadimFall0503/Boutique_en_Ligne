@@ -1,54 +1,73 @@
 {% extends 'shop/base.html' %}
-{% load static%}
+{% load static %}
 
 {% block title %}
     Accueil - Ma Boutique
 {% endblock %}
 
 {% block content %}
-<section class="container bg-white p-4 rounded-3 shadow-md">
+
+<!-- Section Héros -->
+<section class="container bg-white p-4 rounded-3 shadow-md mt-4">
     <div class="row d-flex justify-content-center align-items-center">
-        <div class="col-md-7  text-center text-md-start mb-4 mb-md-0">
-            <h1 class="fw-bold fs-2 mb-3">Découvrez les meilleures offres sur des produits
-                de qualité supérieure</h1>
-            <p>Découvrez une large sélection de produits de qualité à des prix imbattables. Que vous recherchiez des vêtements tendance, de l’électronique, des accessoires ou des articles pour la maison, nous avons tout ce qu’il vous faut.</p>
+        <div class="col-md-7 text-center text-md-start mb-4 mb-md-0">
+            <h1 class="fw-bold fs-2 mb-3">
+                Découvrez les meilleures offres sur des produits de qualité supérieure
+            </h1>
+            <p>
+                Que vous cherchiez des vêtements tendance, de l’électronique, des accessoires
+                ou des articles pour la maison, nous avons tout ce qu’il vous faut à des prix imbattables.
+            </p>
         </div>
         <div class="col-md-5">
-           <img src="{% static 'shop/images/Shop.jpg' %}" alt="Boutique en ligne" class="img-fluid heros rounded-3 shadow-sm">
+            <img src="{% static 'shop/images/Shop.jpg' %}" alt="Boutique en ligne" class="img-fluid rounded-3 shadow-sm">
         </div>
+    </div>
+</section>
 
-        </div>
-    </section>
-    <section class="pt-5">
-        <div class="container">
-            <div class="row d-flex ">
-                <div class="col-md-6">
-                    <img src="{% static 'shop/images/acc.jpg'%}" alt="" class="img-fluid ">
+<!-- Catégories -->
+<section class="pt-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="position-relative text-white">
+                    <img src="{% static 'shop/images/acc.jpg' %}" alt="Accessoires" class="img-fluid rounded">
+                    <div class="position-absolute top-50 start-50 translate-middle bg-primary bg-opacity-75 p-3 rounded">
+                        <h5 class="mb-0 text-center">Accessoires Tendances</h5>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <img src="{% static 'shop/images/montre.jpg' %}" alt="" class="w-100">
-                    
+            </div>
+            <div class="col-md-6">
+                <div class="position-relative text-white">
+                    <img src="{% static 'shop/images/montre.jpg' %}" alt="Montres" class="img-fluid rounded">
+                    <div class="position-absolute top-50 start-50 translate-middle bg-primary bg-opacity-75 p-3 rounded">
+                        <h5 class="mb-0 text-center">Montres Modernes</h5>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-
-
-<section class="container pt-5 mt-5"">
-    <h2 class="text-center fw-bold mb-4">Nos Différents Produits</h2>
+<!-- Produits -->
+<section class="container pt-5 mt-5">
+    <h2 class="text-center fw-bold mb-5 text-primary">🛍️ Nos Produits</h2>
     <div class="row">
         {% for product in product_objects %}
-            <div class="col-sm-6 col-md-4 col-lg-3 mb-4 d-flex">
-                <div class="card product-card shadow-sm h-100 w-100">
-                    <img src="{{ product.image }}" alt="{{ product.title }}" class="card-img-top product-image" />
+            <div class="col-sm-6 col-md-4 col-lg-3 mb-4 d-flex align-items-stretch">
+                <div class="card shadow-sm border-0 rounded-4 w-100 d-flex flex-column animate__animated animate__fadeInUp">
+                    <img src="{{ product.image }}" alt="{{ product.title }}" class="card-img-top" style="height: 200px; object-fit: cover;">
                     <div class="card-body d-flex flex-column text-center">
-                        <h5 class="card-title">{{ product.title }}</h5>
-                        <p class="card-text">{{ product.description }}</p>
-                        <p class="fw-bold text-primary">{{ product.price }} €</p>
-                        <div class="d-flex justify-content-between mt-auto">
-                            <button class="btn btn-primary w-48">Ajouter</button>
-                            <a class="btn btn-outline-secondary w-48">Voir</a>
+                        <h5 class="card-title fw-bold">{{ product.title }}</h5>
+                        <p class="card-text text-muted small">{{ product.description|truncatewords:12 }}</p>
+                        <p class="fw-bold text-primary fs-5">{{ product.price }} €</p>
+                        <div class="mt-auto d-flex justify-content-center gap-2">
+                            <a href="{% url 'add_to_cart' product.id %}" class="btn btn-sm btn-primary px-3">
+                                <i class="bi bi-cart-plus"></i> Ajouter
+                            </a>
+                            <a href="{% url 'detail_produits' product.id %}" class="btn btn-sm btn-outline-secondary px-3">
+                                <i class="bi bi-info-circle"></i> Détails
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -56,23 +75,29 @@
         {% endfor %}
     </div>
 </section>
-<section class="pt-5">
-    <div class="container">
-        <h3 class="text-center fw-bold">À Propos de Xadim-Shop</h3>
-        <div class="row d-flex justify-content-center pt-5">
-            <div class="col-md-6">
-                <img src="{% static 'shop/images/dg.jpg'%}" alt="" class="img-fluid ">
+
+<!-- À Propos -->
+<section class="pt-5 bg-light">
+    <div class="container py-5">
+        <h3 class="text-center fw-bold text-primary mb-5">À Propos de <span class="text-dark">Xadim-Shop</span></h3>
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <img src="{% static 'shop/images/dg.jpg' %}" alt="Fondateur de Xadim-Shop" class="img-fluid rounded-4 shadow-sm">
             </div>
             <div class="col-md-6">
-                <p class="lead fw-bold">
-                    À propos ShopEase
-                    Chez ShopEase, nous croyons qu’un bon shopping commence par une expérience fluide et agréable. C’est pourquoi nous mettons à votre disposition une large gamme de produits soigneusement sélectionnés, à des prix compétitifs, avec une livraison rapide et un service client fiable.
-                </p>
-                <p class="lead fw-bold">
-                    Que vous soyez à la recherche d’électronique, d’accessoires ou d’articles pour la maison, ShopEase est là pour vous simplifier la vie.
-                </p>
+                <div class="bg-white p-4 rounded-4 shadow-sm">
+                    <p class="fw-semibold fs-5 text-muted">
+                        <strong class="text-dark">ShopEase</strong> croit qu’un bon shopping commence par une expérience fluide.
+                        Nous vous offrons une sélection de produits soigneusement choisis à des prix imbattables.
+                    </p>
+                    <p class="fw-semibold fs-5 text-muted">
+                        Que vous cherchiez des accessoires ou des articles de maison,
+                        <strong class="text-dark">ShopEase</strong> vous facilite la vie.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 </section>
+
 {% endblock %}

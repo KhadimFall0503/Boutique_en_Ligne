@@ -1,0 +1,52 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Mon Panier{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+    <h2 class="text-center fw-bold mb-5 text-primary">🛒 Mon Panier</h2>
+
+    {% if cart_items %}
+        <div class="table-responsive shadow rounded-4">
+            <table class="table table-hover align-middle text-center">
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col">Produit</th>
+                        <th scope="col">Quantité</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr>
+                        <td class="fw-semibold">{{ item.product.title }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.subtotal }} €</td>
+                        <td>
+                            <form method="post" action="{% url 'remove_from_cart' item.product.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i> Supprimer
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-end mt-4">
+            <h5 class="fw-bold">Total général : <span class="text-success">{{ total }} €</span></h5>
+            <a href="#" class="btn btn-success mt-3 px-4">
+                <i class="bi bi-check-circle-fill"></i> Valider la commande
+            </a>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center mt-5" role="alert">
+            Votre panier est vide. <a href="{% url 'index' %}" class="alert-link">Continuer vos achats</a>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

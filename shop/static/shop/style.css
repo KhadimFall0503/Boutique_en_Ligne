@@ -62,6 +62,8 @@ body {
     box-shadow: var(--card-hover);
 }
 
+
+
 /* Image du produit */
 .product-image {
     height: 300px;

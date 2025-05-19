@@ -1,0 +1,35 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Résultats de recherche{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4 text-center fw-bold">
+        Résultats pour <span class="text-primary">"{{ query }}"</span>
+    </h2>
+
+    {% if results %}
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            {% for product in results %}
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0 rounded-4">
+                    <img src="{{ product.image }}" class="card-img-top rounded-top" alt="{{ product.title }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column text-center">
+                        <h5 class="card-title fw-semibold">{{ product.title }}</h5>
+                        <p class="card-text text-muted small">{{ product.description|truncatewords:15 }}</p>
+                        <p class="fw-bold text-primary mt-auto">{{ product.price }} €</p>
+                        <a href="{% url 'detail_produits' product.id %}" class="btn btn-sm btn-outline-primary mt-3 px-3">Voir détails</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning text-center mt-5" role="alert">
+            Aucun produit trouvé pour votre recherche.
+            <br>
+            <a href="{% url 'index' %}" class="btn btn-link mt-3">Retour à l'accueil</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
