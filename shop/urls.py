@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from .views import index,liste_produits,detail_produits,login_views,search_results,cart_detail,add_to_cart,cart_view,remove_from_cart
+from .views import index,liste_produits,detail_produits,login_views,search_results,cart_detail,add_to_cart,cart_view,remove_from_cart,produits_par_categorie
 
 urlpatterns = [
     path('', index, name='index' ),
@@ -10,7 +10,8 @@ urlpatterns = [
    path('cart/', cart_view, name='cart_view'),
    path('cart/remove/<int:product_id>/', remove_from_cart, name='remove_from_cart'),
     path('search/', search_results, name='search_results'),
-     path('panier/', cart_detail, name='cart_detail'),
+    path('panier/', cart_detail, name='cart_detail'),
+    path('categorie/<int:categorie_id>/', produits_par_categorie, name='produits_par_categorie'),
 
 
 

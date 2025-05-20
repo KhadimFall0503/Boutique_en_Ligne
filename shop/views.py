@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404
-from .models import Product
+from .models import Product,Category
 from django.shortcuts import redirect
 
 
@@ -56,6 +56,14 @@ def cart_detail(request):
         'cart_items': cart_items,
         'total': total
     })
+def produits_par_categorie(request, categorie_id):
+    categorie = get_object_or_404(Category, id=categorie_id)
+    produits = Product.objects.filter(category=categorie)
+    return render(request, 'shop/produits_par_categorie.html', {
+        'categorie': categorie,
+        'produits': produits
+    })
+
  
  # views.py
 

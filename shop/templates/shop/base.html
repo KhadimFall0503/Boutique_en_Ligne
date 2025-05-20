@@ -45,17 +45,25 @@
                         {% endif %}
                     </a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        Catégories
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Électronique</a></li>
-                        <li><a class="dropdown-item" href="#">Mode</a></li>
-                        <li><a class="dropdown-item" href="#">Accessoires</a></li>
-                    </ul>
-                </li>
+               <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+       data-bs-toggle="dropdown" aria-expanded="false">
+        Catégories
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        {% for cat in categories %}
+            <li>
+                <a class="dropdown-item" href="{% url 'produits_par_categorie' cat.id %}">
+                    {{ cat.name }}
+                </a>
+            </li>
+        {% empty %}
+            <li class="dropdown-item text-muted">Aucune catégorie</li>
+        {% endfor %}
+    </ul>
+</li>
+
+
             </ul>
 
             <!-- Search Form -->
