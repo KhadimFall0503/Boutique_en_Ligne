@@ -8,7 +8,7 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 
 # Sécurité
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "unsafe-secret-key-dev")
-DEBUG = os.environ.get("DEBUG", "False") == "True"
+DEBUG = os.environ.get("DEBUG", "True") == "True"
 ALLOWED_HOSTS = ['.railway.app', 'localhost', '127.0.0.1']  # ajoute ton domaine ici
 
 # Applications
