@@ -16,9 +16,9 @@ STATIC_DIR = os.path.join(BASE_DIR,'static')
 SECRET_KEY = 'django-insecure-=j969k!q6%i()=mvkdhk%&4!7=rwz@g^re=u(!xlkhvt5w_3ce'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['shop.onrender.com']
 
 
 # Application definition
@@ -111,6 +111,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
