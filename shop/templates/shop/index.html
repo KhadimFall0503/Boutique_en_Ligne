@@ -8,46 +8,62 @@
 {% block content %}
 
 <!-- Section Héros -->
-<section class="container bg-white p-4 rounded-3 shadow-md mt-4">
-    <div class="row d-flex justify-content-center align-items-center">
-        <div class="col-md-7 text-center text-md-start mb-4 mb-md-0">
-            <h1 class="fw-bold fs-2 mb-3">
-                Découvrez les meilleures offres sur des produits de qualité supérieure
-            </h1>
-            <p>
-                Que vous cherchiez des vêtements tendance, de l’électronique, des accessoires
-                ou des articles pour la maison, nous avons tout ce qu’il vous faut à des prix imbattables.
-            </p>
-        </div>
-        <div class="col-md-5">
-            <img src="{% static 'shop/images/Shop.jpg' %}" alt="Boutique en ligne" class="img-fluid rounded-3 shadow-sm">
+<section class="w-100 bg-white p-4 " style="border-radius: 0; box-shadow: none;">
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-md-7 text-center text-md-start mb-4 mb-md-0">
+                <h1 class="fw-bold fs-2 mb-3">
+                    Découvrez les meilleures offres sur des produits de qualité supérieure
+                </h1>
+                <p>
+                    Que vous cherchiez des vêtements tendance, de l’électronique, des accessoires
+                    ou des articles pour la maison, nous avons tout ce qu’il vous faut à des prix imbattables.
+                </p>
+            </div>
+            <div class="col-md-5">
+                <img src="{% static 'shop/images/Shop.jpg' %}" alt="Boutique en ligne" class="img-fluid rounded-3 shadow-sm">
+            </div>
         </div>
     </div>
 </section>
 
+
 <!-- Catégories -->
 <section class="pt-5">
     <div class="container">
-        <div class="row g-4">
-            <div class="col-md-6">
-                <div class="position-relative text-white">
-                    <img src="{% static 'shop/images/acc.jpg' %}" alt="Accessoires" class="img-fluid rounded">
-                    <div class="position-absolute top-50 start-50 translate-middle bg-primary bg-opacity-75 p-3 rounded">
-                        <h5 class="mb-0 text-center">Accessoires Tendances</h5>
+        <div id="categoryCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
+            <div class="carousel-inner rounded">
+                
+                <!-- Slide 1 : Accessoires -->
+                <div class="carousel-item active">
+                    <div class="position-relative text-white">
+                        <img src="{% static 'shop/images/acc.jpg' %}" alt="Accessoires" class="d-block w-100 img-fluid rounded" style="height: 400px; object-fit: cover;">
+                        <div class="position-absolute top-50 start-50 translate-middle bg-primary bg-opacity-75 p-4 rounded text-center">
+                            <h5 class="mb-2">Accessoires Tendances</h5>
+                            <p class="small mb-0">Découvrez notre sélection d’accessoires modernes et élégants, parfaits pour compléter vos tenues.</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="position-relative text-white">
-                    <img src="{% static 'shop/images/montre.jpg' %}" alt="Montres" class="img-fluid rounded">
-                    <div class="position-absolute top-50 start-50 translate-middle bg-primary bg-opacity-75 p-3 rounded">
-                        <h5 class="mb-0 text-center">Montres Modernes</h5>
+                
+                <!-- Slide 2 : Montres -->
+                <div class="carousel-item">
+                    <div class="position-relative text-white">
+                        <img src="{% static 'shop/images/montre.jpg' %}" alt="Montres" class="d-block w-100 img-fluid rounded" style="height: 400px; object-fit: cover;">
+                        <div class="position-absolute top-50 start-50 translate-middle bg-primary bg-opacity-75 p-4 rounded text-center">
+                            <h5 class="mb-2">Montres Modernes</h5>
+                            <p class="small mb-0">Des montres au design contemporain et fonctionnel, parfaites pour un style unique.</p>
+                        </div>
                     </div>
                 </div>
+                
+                <!-- Tu peux ajouter d’autres slides de la même façon -->
+
             </div>
         </div>
     </div>
 </section>
+
+
 
 <!-- Produits -->
 <section class="container pt-5 mt-5">
