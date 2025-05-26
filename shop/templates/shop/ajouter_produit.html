@@ -1,0 +1,18 @@
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .forms import ProductForm
+
+@login_required
+def ajouter_produit(request):
+    if not request.user.is_superuser:
+        return redirect('index')  # ou page d'erreur
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('liste_produits')  # ou autre page
+    else:
+        form = ProductForm()
+
+    return render(request, 'shop/ajouter_produit.html', {'form': form})

@@ -1,18 +1,26 @@
-from django.contrib import admin
 from django.urls import path
-from .views import index,liste_produits,detail_produits,login_views,search_results,cart_detail,add_to_cart,cart_view,remove_from_cart,produits_par_categorie
+from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('', index, name='index' ),
-    path('produits/', liste_produits, name='liste_produits' ),
-    path('detail/<int:id>/', detail_produits, name='detail_produits'),
-   path('ajouter/<int:product_id>/', add_to_cart, name='add_to_cart'),
-   path('cart/', cart_view, name='cart_view'),
-   path('cart/remove/<int:product_id>/', remove_from_cart, name='remove_from_cart'),
-    path('search/', search_results, name='search_results'),
-    path('panier/', cart_detail, name='cart_detail'),
-    path('categorie/<int:categorie_id>/', produits_par_categorie, name='produits_par_categorie'),
+    path('', views.index, name='index'),
+    path('produits/', views.liste_produits, name='liste_produits'),
+    path('produit/<int:id>/', views.detail_produits, name='detail_produits'),
+    path('produits/categorie/<int:categorie_id>/', views.produits_par_categorie, name='produits_par_categorie'),
+    path('search/', views.search_results, name='search_results'),
+    path('cart/', views.cart_detail, name='cart_detail'),
+    path('cart/add/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
+    path('cart/remove/<int:product_id>/', views.remove_from_cart, name='remove_from_cart'),
 
+    # Ajout produit par utilisateur connecté
+    path('produits/ajouter-mon-produit/', views.ajouter_produit_utilisateur, name='ajouter_produit_utilisateur'),
 
+    # Ajout produit (superuser)
+    path('produits/ajouter/', views.ajouter_produit, name='ajouter_produit'),
 
+    # Connexion superuser
+    path('superuser-login/', views.superuser_login, name='superuser_login'),
+
+    # Déconnexion
+    path('logout/', auth_views.LogoutView.as_view(next_page='index'), name='logout'),
 ]

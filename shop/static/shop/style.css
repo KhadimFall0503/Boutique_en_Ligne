@@ -61,6 +61,27 @@ body {
     transform: translateY(-5px);
     box-shadow: var(--card-hover);
 }
+/* Animation fade-slide pour le modal */
+@keyframes fadeSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal.fade .modal-dialog {
+    animation: fadeSlideIn 0.5s ease forwards;
+}
+
+/* Bouton Connexion Superuser */
+.custom-navbar .btn-outline-warning {
+    font-weight: bold;
+    border-width: 2px;
+}
 
 
 
