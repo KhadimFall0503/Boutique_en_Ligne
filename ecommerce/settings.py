@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import dj_database_url  # On ajoute cette importation
 
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -8,8 +9,8 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 
 # Sécurité
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "unsafe-secret-key-dev")
-DEBUG = os.environ.get("DEBUG", "True") == "True"
-ALLOWED_HOSTS = ['.railway.app', 'localhost', '127.0.0.1']  # ajoute ton domaine ici
+DEBUG = os.environ.get("DEBUG", "False") == "True"
+ALLOWED_HOSTS = ['.railway.app', 'localhost', '127.0.0.1', os.environ.get('RAILWAY_STATIC_URL', '')]
 
 # Applications
 INSTALLED_APPS = [
@@ -56,12 +57,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
-# Base de données (par défaut SQLite, à adapter pour PostgreSQL plus tard si besoin)
+# Base de données - PostgreSQL sur Railway
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
 # Validation des mots de passe
@@ -78,15 +80,15 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Fichiers statiques (CSS, JS, etc.)
+# Fichiers statiques
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Média (si tu as des images à gérer)
+# Média
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Clé par défaut pour les modèles
+# Clé par défaut
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
