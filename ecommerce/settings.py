@@ -11,7 +11,8 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 # Sécurité
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "unsafe-secret-key-dev")
 DEBUG = os.environ.get("DEBUG", "False") == "True"
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']  # adapte selon ton déploiement
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'web-production-bd35a.up.railway.app']
+# adapte selon ton déploiement
 
 # Applications
 INSTALLED_APPS = [
