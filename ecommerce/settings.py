@@ -10,7 +10,7 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 
 # Sécurité
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "unsafe-secret-key-dev")
-DEBUG = os.environ.get("DEBUG", "False") == "True"
+DEBUG = os.environ.get("DEBUG", "True") == "True"
 ALLOWED_HOSTS = ['*']
 # adapte selon ton déploiement
 
@@ -92,7 +92,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Média (uploads)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 # Auto field par défaut
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

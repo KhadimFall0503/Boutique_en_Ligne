@@ -56,19 +56,43 @@
                     </ul>
                 </li>
 
-                {% if request.user.is_authenticated %}
-                    <li class="nav-item">
-                        <!-- Bouton modal Ajouter produit -->
-                        <button type="button" class="btn btn-outline-primary btn-sm ms-lg-2" data-bs-toggle="modal" data-bs-target="#superuserModal">
-                            <i class="bi bi-plus-circle"></i> Ajouter un produit
-                        </button>
-                    </li>
-                    {# Bouton Déconnexion retiré ici #}
-                {% else %}
-                    <li class="nav-item">
-                        <a class="btn btn-outline-success btn-sm ms-lg-2" href="{% url 'login' %}">
-                            Connexion
+                <!-- Gestion Produits : Superuser uniquement -->
+                {% if request.user.is_authenticated and request.user.is_superuser %}
+                    <li class="nav-item dropdown ms-lg-2">
+                        <a class="btn btn-outline-primary btn-sm dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-plus-circle"></i> Gestion Produits
                         </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'ajouter_produit' %}">
+                                    <i class="bi bi-plus-circle me-2"></i> Ajouter un produit
+                                </a>
+                            </li>
+
+                            {% if product_objects %}
+                                {% for produit in product_objects %}
+                                    <li>
+                                        <a class="dropdown-item" href="{% url 'modifier_produit' produit.id %}">
+                                            <i class="bi bi-pencil me-2"></i> Modifier : {{ produit.name }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            {% else %}
+                                <li><span class="dropdown-item text-muted">Aucun produit à modifier</span></li>
+                            {% endif %}
+
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <i class="bi bi-trash me-2"></i> Supprimer un produit
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+
+                {% if not request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="btn btn-outline-success btn-sm ms-lg-2" href="{% url 'login' %}">Connexion</a>
                     </li>
                 {% endif %}
             </ul>
@@ -82,13 +106,13 @@
     </div>
 </nav>
 
-<!-- Affichage des messages flash -->
+<!-- Flash Messages -->
 <div class="container mt-3">
     {% if messages %}
         {% for message in messages %}
             <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                 {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         {% endfor %}
     {% endif %}
@@ -101,34 +125,6 @@
 <footer class="bg-light text-center text-muted py-3 mt-5">
     <small>© 2025 <strong>Xadim-Shop</strong>. Tous droits réservés.</small>
 </footer>
-
-<!-- Modal Superuser -->
-<div class="modal fade" id="superuserModal" tabindex="-1" aria-labelledby="superuserModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form method="post" action="{% url 'superuser_login' %}">
-                {% csrf_token %}
-                <div class="modal-header">
-                    <h5 class="modal-title" id="superuserModalLabel">Connexion Superuser</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Nom d'utilisateur</label>
-                        <input type="text" class="form-control" id="username" name="username" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Mot de passe</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Se connecter</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

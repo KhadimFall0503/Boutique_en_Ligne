@@ -19,6 +19,7 @@ urlpatterns = [
 
     # Ajout produit (superuser)
     path('produits/ajouter/', views.ajouter_produit, name='ajouter_produit'),
+    path('produit/modifier/<int:id>/', views.modifier_produit, name='modifier_produit'),
 
     # Connexion superuser
     path('superuser-login/', views.superuser_login, name='superuser_login'),

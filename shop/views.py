@@ -7,7 +7,7 @@ from .forms import ProductForm
 
 # Page d'accueil
 def index(request):
-    product_objects = Product.objects.all()
+    product_objects = Product.objects.all()[:8]
     context = {'product_objects': product_objects}
     return render(request, 'shop/index.html', context)
 
@@ -126,3 +126,15 @@ def superuser_login(request):
     else:
         messages.warning(request, "Vous devez vous connecter en tant que superuser.")
         return redirect('index')
+    
+
+def modifier_produit(request, id):
+    produit = get_object_or_404(Product, id=id)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=produit)
+        if form.is_valid():
+            form.save()
+            return redirect('accueil')
+    else:
+        form = ProductForm(instance=produit)
+    return render(request, 'shop/modifier_produit.html', {'form': form})

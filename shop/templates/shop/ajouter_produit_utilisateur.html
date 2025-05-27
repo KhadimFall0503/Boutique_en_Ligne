@@ -9,7 +9,7 @@
         <div class="col-md-8 col-lg-6">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <form method="post" enctype="multipart/form-data" novalidate>
+                    <form method="post" enctype="multipart/form-data" >
                         {% csrf_token %}
                         <!-- Formulaire stylisé -->
                         {% for field in form %}
