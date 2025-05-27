@@ -11,7 +11,7 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 # Sécurité
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "unsafe-secret-key-dev")
 DEBUG = os.environ.get("DEBUG", "False") == "True"
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'web-production-bd35a.up.railway.app']
+ALLOWED_HOSTS = ['*']
 # adapte selon ton déploiement
 
 # Applications
@@ -44,7 +44,7 @@ ROOT_URLCONF = 'ecommerce.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIR],
+        'DIRS': [os.path.join(TEMPLATES_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
