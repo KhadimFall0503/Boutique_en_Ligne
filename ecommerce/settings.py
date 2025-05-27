@@ -3,18 +3,15 @@ from pathlib import Path
 
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Templates et static
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 
 # Sécurité
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "unsafe-secret-key-dev")
-DEBUG = os.environ.get("DEBUG", "True") == "True"
-ALLOWED_HOSTS = [
-    '.railway.app',
-    'localhost',
-    '127.0.0.1',
-    os.environ.get('RAILWAY_STATIC_URL', '')  # Support pour Railway
-]
+DEBUG = os.environ.get("DEBUG", "False") == "True"
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']  # adapte selon ton déploiement
 
 # Applications
 INSTALLED_APPS = [
@@ -24,13 +21,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'shop',  # ton app principale
+    'shop',  # ton app
 ]
 
 # Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Sert les fichiers statiques
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # sert les fichiers statiques en prod
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -39,6 +36,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# URLs
 ROOT_URLCONF = 'ecommerce.urls'
 
 # Templates
@@ -53,24 +51,25 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'shop.context_processors.cart_count',  # context_processors personnalisés
+                'shop.context_processors.cart_count',
                 'shop.context_processors.categories_context',
             ],
         },
     },
 ]
 
+# WSGI
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
-# 📦 Base de données : SQLite (local ou Railway sans DB externe)
+# Base de données SQLite (simple et efficace)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.sqlite3',  # **Indispensable !**
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
-# Validation des mots de passe
+# Validation mots de passe
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -84,15 +83,15 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# 📂 Fichiers statiques (CSS, JS, etc.)
+# Statics
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# 📂 Médias (uploads)
+# Média (uploads)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Clé par défaut pour les modèles
+# Auto field par défaut
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
