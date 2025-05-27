@@ -6,22 +6,30 @@
 
 {% block content %}
 <section class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="card shadow rounded-4 overflow-hidden border-0">
-                <div class="ratio ratio-4x3">
-                    <img src="{{ detail.image }}" alt="{{ detail.title }}" class="card-img-top object-fit-cover">
-                </div>
-                <div class="card-body text-center px-4 py-4">
-                    <h2 class="card-title fw-bold mb-3">{{ detail.title }}</h2>
-                    <p class="card-text lead text-muted mb-4">{{ detail.description }}</p>
-                    <p class="fw-bold fs-3 text-primary mb-4">{{ detail.price }} €</p>
-                    <a href="{% url 'add_to_cart' detail.id %}" class="btn btn-primary btn-lg px-5 shadow-sm">
-                        <i class="bi bi-cart-plus me-2"></i> Ajouter au panier
-                    </a>
-                </div>
+    <div class="row justify-content-center align-items-center gx-5 fade-in-up">
+        <!-- Image à gauche -->
+        <div class="col-md-6 mb-4 mb-md-0">
+            <div class="shadow-lg rounded-5 overflow-hidden product-image-container">
+                <img src="{{ detail.image }}" alt="{{ detail.title }}" class="img-fluid w-100 h-100 object-fit-cover" loading="lazy" />
             </div>
-            <a href="javascript:history.back()" class="btn btn-link mt-4 d-block text-center">
+        </div>
+
+        <!-- Description à droite -->
+        <div class="col-md-5">
+            <h1 class="fw-bold mb-4 display-5 text-dark">{{ detail.title }}</h1>
+            <p class="text-secondary fs-5 mb-4">{{ detail.description }}</p>
+
+            <div class="mb-4">
+                <span class="badge bg-primary fs-4 px-4 py-2 shadow-sm">
+                    {{ detail.price }} €
+                </span>
+            </div>
+
+            <a href="{% url 'add_to_cart' detail.id %}" class="btn btn-primary btn-lg px-5 shadow-sm btn-hover">
+                <i class="bi bi-cart-plus me-2"></i> Ajouter au panier
+            </a>
+
+            <a href="javascript:history.back()" class="d-inline-block mt-5 text-muted text-decoration-none small">
                 <i class="bi bi-arrow-left"></i> Retour
             </a>
         </div>
@@ -29,12 +37,56 @@
 </section>
 
 <style>
+/* Animation fade-in up au scroll */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.8s ease forwards;
+    animation-delay: 0.2s;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Image zoom on hover */
+.product-image-container {
+    max-height: 450px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    border-radius: 1.5rem;
+    overflow: hidden;
+}
+
+.product-image-container:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 123, 255, 0.4);
+}
+
 .object-fit-cover {
     object-fit: cover;
-    width: 100%;
+    border-radius: 1.5rem;
     height: 100%;
-    border-top-left-radius: 1rem;
-    border-top-right-radius: 1rem;
+}
+
+/* Bouton avec hover smooth */
+.btn-hover {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-hover:hover {
+    background-color: #0056b3;
+    box-shadow: 0 8px 15px rgba(0, 86, 179, 0.3);
+}
+
+/* Responsive tweaks */
+@media (max-width: 767px) {
+    .product-image-container {
+        max-height: 300px;
+    }
 }
 </style>
 {% endblock %}
