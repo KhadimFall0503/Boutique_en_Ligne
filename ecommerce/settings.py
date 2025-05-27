@@ -1,6 +1,5 @@
 import os
 from pathlib import Path
-import dj_database_url
 
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -10,7 +9,12 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 # Sécurité
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "unsafe-secret-key-dev")
 DEBUG = os.environ.get("DEBUG", "False") == "True"
-ALLOWED_HOSTS = ['.railway.app', 'localhost', '127.0.0.1', os.environ.get('RAILWAY_STATIC_URL', '')]
+ALLOWED_HOSTS = [
+    '.railway.app',
+    'localhost',
+    '127.0.0.1',
+    os.environ.get('RAILWAY_STATIC_URL', '')  # Support pour Railway
+]
 
 # Applications
 INSTALLED_APPS = [
@@ -20,13 +24,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'shop',  # Ton app principale
+    'shop',  # ton app principale
 ]
 
 # Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Pour servir les fichiers statiques
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Sert les fichiers statiques
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -49,7 +53,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'shop.context_processors.cart_count',  # Tes context_processors
+                'shop.context_processors.cart_count',  # context_processors personnalisés
                 'shop.context_processors.categories_context',
             ],
         },
@@ -58,24 +62,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
-# 📦 Base de données : PostgreSQL Railway ou fallback SQLite
-DATABASE_URL = os.environ.get('DATABASE_URL')
-if DATABASE_URL:
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=DATABASE_URL,
-            conn_max_age=600,
-            ssl_require=True
-        )
+# 📦 Base de données : SQLite (local ou Railway sans DB externe)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-else:
-    print("⚠️ DATABASE_URL not found, fallback to SQLite")
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+}
 
 # Validation des mots de passe
 AUTH_PASSWORD_VALIDATORS = [
@@ -91,15 +84,15 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Fichiers statiques (CSS, JS, images)
+# 📂 Fichiers statiques (CSS, JS, etc.)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Médias (uploads)
+# 📂 Médias (uploads)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Clé auto pour les modèles
+# Clé par défaut pour les modèles
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
