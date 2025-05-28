@@ -5,6 +5,10 @@ from django.contrib import messages
 from .models import Product, Category
 from .forms import ProductForm
 
+# Vérifie si l'utilisateur est superuser (admin)
+def is_superuser(user):
+    return user.is_superuser
+
 # Page d'accueil
 def index(request):
     product_objects = Product.objects.all()[:8]
@@ -16,10 +20,6 @@ def liste_produits(request):
     produits = Product.objects.all()
     context = {'produits': produits}
     return render(request, 'shop/liste_produits.html', context)
-
-# Vérifie si l'utilisateur est superuser (admin)
-def is_superuser(user):
-    return user.is_superuser
 
 # Ajouter un produit (réservé aux superusers)
 @login_required
@@ -34,6 +34,32 @@ def ajouter_produit(request):
     else:
         form = ProductForm()
     return render(request, 'shop/ajouter_produit.html', {'form': form})
+
+# Modifier un produit (réservé aux superusers)
+@login_required
+@user_passes_test(is_superuser)
+def modifier_produit(request, id):
+    produit = get_object_or_404(Product, id=id)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=produit)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Produit modifié avec succès.")
+            return redirect('liste_produits')
+    else:
+        form = ProductForm(instance=produit)
+    return render(request, 'shop/modifier_produit.html', {'form': form, 'produit': produit})
+
+# Supprimer un produit (réservé aux superusers)
+@login_required
+@user_passes_test(is_superuser)
+def supprimer_produit(request, id):
+    produit = get_object_or_404(Product, id=id)
+    if request.method == 'POST':
+        produit.delete()
+        messages.success(request, "Produit supprimé avec succès.")
+        return redirect('liste_produits')
+    return render(request, 'shop/confirmer_suppression.html', {'produit': produit})
 
 # Détail d'un produit
 def detail_produits(request, id):
@@ -93,48 +119,33 @@ def remove_from_cart(request, product_id):
     request.session['cart'] = cart
     return redirect('cart_detail')
 
-# Ajouter un produit par un utilisateur authentifié (non superuser)
+# Ajouter un produit par un utilisateur (non superuser)
 @login_required
 def ajouter_produit_utilisateur(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             produit = form.save(commit=False)
-            produit.user = request.user  # Assure que Product a un champ user
+            produit.user = request.user  # Ajoute l'utilisateur associé (si le modèle le prévoit)
             produit.save()
             messages.success(request, "Produit ajouté avec succès.")
             return redirect('liste_produits')
     else:
         form = ProductForm()
-
     return render(request, 'shop/ajouter_produit_utilisateur.html', {'form': form})
 
-# Page de connexion dédiée aux superusers (modal ou page spécifique)
-def superuser_login(request):
+# Connexion superuser
+def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
         
-        if user is not None and user.is_superuser:
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
             login(request, user)
-            messages.success(request, "Connecté en tant que superuser.")
-            return redirect('ajouter_produit_utilisateur')
+            messages.success(request, f"Bienvenue {user.username} !")
+            return redirect('index')  # redirige vers la page d'accueil ou autre
         else:
-            messages.error(request, "Identifiants invalides ou accès refusé.")
-            return redirect('index')
-    else:
-        messages.warning(request, "Vous devez vous connecter en tant que superuser.")
-        return redirect('index')
+            messages.error(request, "Nom d'utilisateur ou mot de passe incorrect.")
     
-
-def modifier_produit(request, id):
-    produit = get_object_or_404(Product, id=id)
-    if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES, instance=produit)
-        if form.is_valid():
-            form.save()
-            return redirect('accueil')
-    else:
-        form = ProductForm(instance=produit)
-    return render(request, 'shop/modifier_produit.html', {'form': form})
+    return render(request, 'shop/login.html')

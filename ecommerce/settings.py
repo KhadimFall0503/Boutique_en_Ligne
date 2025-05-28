@@ -4,17 +4,16 @@ from pathlib import Path
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Templates et static
-TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
-STATIC_DIR = os.path.join(BASE_DIR, 'static')
+# Dossiers templates et static
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')  # /chemin/vers/projet/templates
+STATIC_DIR = os.path.join(BASE_DIR, 'static')        # /chemin/vers/projet/static
 
 # Sécurité
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "unsafe-secret-key-dev")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "unsafe-secret-key-dev")  # Remplacer en prod !
 DEBUG = os.environ.get("DEBUG", "True") == "True"
-ALLOWED_HOSTS = ['*']
-# adapte selon ton déploiement
+ALLOWED_HOSTS = ['*']  # À adapter en production
 
-# Applications
+# Applications installées
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -22,13 +21,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'shop',  # ton app
+    'shop',  # Ton app principale
 ]
 
 # Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # sert les fichiers statiques en prod
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Pour servir statics en prod
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -37,21 +36,23 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# URLs
+# URLs principales
 ROOT_URLCONF = 'ecommerce.urls'
 
 # Templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(TEMPLATES_DIR, 'templates')],
+        # Ici on pointe directement vers le dossier templates
+        'DIRS': [TEMPLATES_DIR],  
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',
+                'django.template.context_processors.request',  # Important pour auth
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # Tes context processors perso, si tu les utilises :
                 'shop.context_processors.cart_count',
                 'shop.context_processors.categories_context',
             ],
@@ -62,15 +63,15 @@ TEMPLATES = [
 # WSGI
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
-# Base de données SQLite (simple et efficace)
+# Base de données SQLite simple
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # **Indispensable !**
+        'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
-# Validation mots de passe
+# Validation des mots de passe
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -84,15 +85,18 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Statics
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'index'
+
+# Fichiers statiques (CSS, JS, images)
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [STATIC_DIR]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [STATIC_DIR]  # dossiers à utiliser en dev
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # dossier de collecte statics en prod
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Média (uploads)
+# Fichiers médias (uploads)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Auto field par défaut
+# Clé auto-incrément Django par défaut
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

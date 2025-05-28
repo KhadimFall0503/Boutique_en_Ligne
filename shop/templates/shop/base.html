@@ -7,7 +7,7 @@
     <title>{% block title %}Ma Boutique{% endblock %}</title>
 
     <!-- Bootstrap CSS + Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-..." crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Custom CSS -->
@@ -21,7 +21,8 @@
         <a class="navbar-brand fw-bold text-primary d-flex align-items-center" href="{% url 'index' %}">
             <i class="bi bi-shop-window me-2"></i> Xadim-Shop
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -36,7 +37,7 @@
                 <li class="nav-item position-relative">
                     <a class="nav-link fw-semibold" href="{% url 'cart_detail' %}">
                         <i class="bi bi-cart3 me-1"></i>Panier
-                        {% if cart_count %}
+                        {% if cart_count and cart_count > 0 %}
                             <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle">
                                 {{ cart_count }}
                             </span>
@@ -44,7 +45,8 @@
                     </a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link fw-semibold dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <a class="nav-link fw-semibold dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
                         Catégories
                     </a>
                     <ul class="dropdown-menu">
@@ -56,10 +58,11 @@
                     </ul>
                 </li>
 
-                <!-- Gestion Produits : Superuser uniquement -->
+                <!-- Gestion Produits : uniquement superuser connecté -->
                 {% if request.user.is_authenticated and request.user.is_superuser %}
                     <li class="nav-item dropdown ms-lg-2">
-                        <a class="btn btn-outline-primary btn-sm dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        <a class="btn btn-outline-primary btn-sm dropdown-toggle" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-plus-circle"></i> Gestion Produits
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
@@ -73,7 +76,7 @@
                                 {% for produit in product_objects %}
                                     <li>
                                         <a class="dropdown-item" href="{% url 'modifier_produit' produit.id %}">
-                                            <i class="bi bi-pencil me-2"></i> Modifier : {{ produit.name }}
+                                            <i class="bi bi-pencil me-2"></i> Modifier : {{ produit.title }}
                                         </a>
                                     </li>
                                 {% endfor %}
@@ -86,20 +89,32 @@
                                     <i class="bi bi-trash me-2"></i> Supprimer un produit
                                 </a>
                             </li>
+
+                            <li><hr class="dropdown-divider"></li>
+
+                            <li class="nav-item">
+                                <form method="post" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-danger btn-sm ms-lg-2">Déconnexion</button>
+                                </form>
+                            </li>
+                        </ul>
+</li>
                         </ul>
                     </li>
-                {% endif %}
-
-                {% if not request.user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="btn btn-outline-success btn-sm ms-lg-2" href="{% url 'login' %}">Connexion</a>
-                    </li>
+                {% else %}
+                    <!-- Bouton Connexion visible uniquement si non connecté -->
+                    {% if not request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="btn btn-outline-success btn-sm ms-lg-2" href="{% url 'login' %}">Connexion</a>
+                        </li>
+                    {% endif %}
                 {% endif %}
             </ul>
 
             <!-- Search Bar -->
             <form class="d-flex ms-lg-3 mt-3 mt-lg-0" method="get" action="{% url 'search_results' %}">
-                <input class="form-control form-control-sm me-2" type="search" placeholder="Rechercher" name="q" required>
+                <input class="form-control form-control-sm me-2" type="search" placeholder="Rechercher" name="q" required aria-label="Recherche">
                 <button class="btn btn-sm btn-outline-secondary" type="submit">Go</button>
             </form>
         </div>
@@ -112,7 +127,7 @@
         {% for message in messages %}
             <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                 {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
             </div>
         {% endfor %}
     {% endif %}
@@ -126,6 +141,6 @@
     <small>© 2025 <strong>Xadim-Shop</strong>. Tous droits réservés.</small>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
 </body>
 </html>

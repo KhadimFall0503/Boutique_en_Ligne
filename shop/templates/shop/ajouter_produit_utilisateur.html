@@ -1,33 +1,11 @@
 {% extends 'shop/base.html' %}
-
-{% block title %}Ajouter mon produit{% endblock %}
-
 {% block content %}
-<div class="container my-5">
-    <h2 class="text-center mb-4">Ajouter un nouveau produit</h2>
-    <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <form method="post" enctype="multipart/form-data" >
-                        {% csrf_token %}
-                        <!-- Formulaire stylisé -->
-                        {% for field in form %}
-                            <div class="mb-3">
-                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                                {{ field }}
-                                {% if field.errors %}
-                                    <div class="text-danger small">
-                                        {{ field.errors|striptags }}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                        <button type="submit" class="btn btn-primary w-100">Ajouter</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="container mt-4">
+    <h3>Ajouter un produit</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+    </form>
 </div>
 {% endblock %}
