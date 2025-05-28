@@ -14,6 +14,8 @@ urlpatterns = [
     path('cart/add/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('cart/remove/<int:product_id>/', views.remove_from_cart, name='remove_from_cart'),
     path('categorie/<int:categorie_id>/', views.produits_par_categorie, name='produits_par_categorie'),
-     path('logout/', auth_views.LogoutView.as_view(next_page='index'), name='logout'),
-      path('login/', auth_views.LoginView.as_view(template_name='shop/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='index'), name='logout'),
+    path('login/', auth_views.LoginView.as_view(template_name='shop/login.html'), name='login'),
+    path('produits/confirm_delete/<int:id>/', views.confirm_delete, name='confirm_delete'),
+
 ]

@@ -149,3 +149,24 @@ def login_view(request):
             messages.error(request, "Nom d'utilisateur ou mot de passe incorrect.")
     
     return render(request, 'shop/login.html')
+
+@login_required
+def supprimer_produit(request, id):
+    produit = get_object_or_404(Product, id=id)
+
+    if request.method == 'POST':
+        produit.delete()
+        return redirect('liste_produits')
+
+    # Si GET, afficher la page de confirmation
+    return render(request, 'shop/confirm_delete.html', {'produit': produit})
+
+    # Si GET, afficher la page de confirmation
+    return render(request, 'shop/confirm_delete.html', {'produit': produit})
+
+def confirm_delete(request, id):
+    produit = get_object_or_404(Product, id=id)
+    if request.method == 'POST':
+        produit.delete()
+        return redirect('liste_produits')
+    return render(request, 'shop/confirm_delete.html', {'produit': produit})
