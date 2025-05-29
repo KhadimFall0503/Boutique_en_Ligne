@@ -150,16 +150,16 @@ def login_view(request):
     
     return render(request, 'shop/login.html')
 
+ # Facultatif, peut juste renvoyer vers la liste
 @login_required
 def supprimer_produit(request, id):
     produit = get_object_or_404(Product, id=id)
-
     if request.method == 'POST':
         produit.delete()
         return redirect('liste_produits')
+    else:
+        return redirect('confirm_delete', id=id)  # Facultatif, peut juste renvoyer vers la liste
 
-    # Si GET, afficher la page de confirmation
-    return render(request, 'shop/confirm_delete.html', {'produit': produit})
 
     # Si GET, afficher la page de confirmation
     return render(request, 'shop/confirm_delete.html', {'produit': produit})
