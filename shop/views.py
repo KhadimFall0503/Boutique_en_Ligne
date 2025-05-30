@@ -172,4 +172,9 @@ def confirm_delete(request, id):
     return render(request, 'shop/confirm_delete.html', {'produit': produit})
 
 def confirmation(request):
-    return render(request, 'shop/confirmation.html')
+    if request.method == 'POST':
+        # Ici, tu peux simuler le traitement du paiement
+        # Ex: vider le panier, enregistrer une commande, etc.
+        return render(request, 'shop/confirmation.html')
+    else:
+        return redirect('panier') 

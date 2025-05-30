@@ -41,10 +41,14 @@
 
         <div class="text-end mt-4">
             <h5 class="fw-bold fs-5">Total général : <span class="text-success">{{ total }} €</span></h5>
-            <a href="{% url 'confirmation' %}" class="btn btn-success mt-3 px-5 py-2 shadow-sm fs-5 d-inline-flex align-items-center">
-                <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal" style="height:24px; margin-right:8px;">
-                Payer avec PayPal
-            </a>
+            <form method="post" action="{% url 'confirmation' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-success mt-3 px-5 py-2 shadow-sm fs-5 d-inline-flex align-items-center">
+        <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal" style="height:24px; margin-right:8px;">
+        Payer avec PayPal
+    </button>
+</form>
+
 
 
         </div>
