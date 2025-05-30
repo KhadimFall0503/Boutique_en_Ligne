@@ -1,0 +1,15 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Confirmation{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+    <h2 class="text-center fw-bold text-success mb-4">
+        <i class="bi bi-check-circle-fill me-2"></i> Paiement Réussi
+    </h2>
+    <p class="text-center fs-5">Merci pour votre commande ! Nous vous enverrons un email de confirmation.</p>
+    <div class="text-center mt-4">
+        <a href="{% url 'index' %}" class="btn btn-primary">Retour à l'accueil</a>
+    </div>
+</section>
+{% endblock %}

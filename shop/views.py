@@ -170,3 +170,6 @@ def confirm_delete(request, id):
         produit.delete()
         return redirect('liste_produits')
     return render(request, 'shop/confirm_delete.html', {'produit': produit})
+
+def confirmation(request):
+    return render(request, 'shop/confirmation.html')

@@ -41,9 +41,12 @@
 
         <div class="text-end mt-4">
             <h5 class="fw-bold fs-5">Total général : <span class="text-success">{{ total }} €</span></h5>
-            <a href="#" class="btn btn-success mt-3 px-5 py-2 shadow-sm fs-5 d-inline-flex align-items-center">
-                <i class="bi bi-check-circle-fill me-2 fs-4"></i> Valider la commande
+            <a href="{% url 'confirmation' %}" class="btn btn-success mt-3 px-5 py-2 shadow-sm fs-5 d-inline-flex align-items-center">
+                <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal" style="height:24px; margin-right:8px;">
+                Payer avec PayPal
             </a>
+
+
         </div>
     {% else %}
         <div class="alert alert-info text-center mt-5 fs-5" role="alert">
