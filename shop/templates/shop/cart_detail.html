@@ -1,92 +1,123 @@
-{% extends 'shop/base.html' %}
-
-{% block title %}Mon Panier{% endblock %}
-
+{% extends 'shop/base.html' %} {% block title %}Mon Panier{% endblock %} 
 {% block content %}
+
 <section class="container py-5">
-    <h2 class="text-center fw-bold mb-5 text-primary">
-        <i class="bi bi-cart3 me-2"></i> Mon Panier
-    </h2>
+  <h2 class="text-center fw-bold mb-5 text-primary">
+    <i class="bi bi-cart3 me-2"></i> Mon Panier
+  </h2>
 
-    {% if cart_items %}
-        <div class="table-responsive shadow rounded-4 border">
-            <table class="table table-hover align-middle text-center mb-0">
-                <thead class="table-primary">
-                    <tr>
-                        <th scope="col"><i class="bi bi-box-seam me-1"></i> Produit</th>
-                        <th scope="col"><i class="bi bi-list-ol me-1"></i> Quantité</th>
-                        <th scope="col"><i class="bi bi-currency-euro me-1"></i> Total</th>
-                        <th scope="col"><i class="bi bi-x-circle me-1"></i> Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in cart_items %}
-                    <tr>
-                        <td class="fw-semibold text-start">{{ item.product.title }}</td>
-                        <td>{{ item.quantity }}</td>
-                        <td class="fw-bold text-success">{{ item.subtotal }} €</td>
-                        <td>
-                            <form method="post" action="{% url 'remove_from_cart' item.product.id %}">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Supprimer">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+  {% if cart_items %}
+  <div class="table-responsive shadow rounded-4 border">
+    <table class="table table-hover align-middle text-center mb-0">
+      <thead class="table-primary">
+        <tr>
+          <th scope="col" class="text-start">
+            <i class="bi bi-box-seam me-1"></i> Produit
+          </th>
+          <th scope="col"><i class="bi bi-list-ol me-1"></i> Quantité</th>
+          <th scope="col"><i class="bi bi-currency-euro me-1"></i> Total</th>
+          <th scope="col"><i class="bi bi-x-circle me-1"></i> Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in cart_items %}
+        <tr class="align-middle">
+          <td class="fw-semibold text-start">{{ item.product.title }}</td>
+          <td>{{ item.quantity }}</td>
+          <td class="fw-bold text-success">{{ item.subtotal }} €</td>
+          <td>
+            <form
+              method="post"
+              action="{% url 'remove_from_cart' item.product.id %}"
+            >
+              {% csrf_token %}
+              <button
+                type="submit"
+                class="btn btn-sm btn-outline-danger"
+                title="Supprimer"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
-        <div class="text-end mt-4">
-            <h5 class="fw-bold fs-5">Total général : <span class="text-success">{{ total }} €</span></h5>
-            <form method="post" action="{% url 'confirmation' %}">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-success mt-3 px-5 py-2 shadow-sm fs-5 d-inline-flex align-items-center">
-        <img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal" style="height:24px; margin-right:8px;">
+  <div class="text-end mt-4">
+    <h5 class="fw-bold fs-5 mb-3">
+      Total général : <span class="text-success">{{ total }} €</span>
+    </h5>
+    <form method="post" action="{% url 'confirmation' %}">
+      {% csrf_token %}
+      <button
+        type="submit"
+        class="btn btn-success mt-3 px-5 py-2 shadow-sm fs-5 d-inline-flex align-items-center justify-content-center"
+      >
+        <img
+          src="https://www.paypalobjects.com/webstatic/icon/pp258.png"
+          alt="PayPal"
+          style="height: 24px; margin-right: 8px"
+        />
         Payer avec PayPal
-    </button>
-</form>
-
-
-
-        </div>
-    {% else %}
-        <div class="alert alert-info text-center mt-5 fs-5" role="alert">
-            Votre panier est vide. <a href="{% url 'index' %}" class="alert-link fw-semibold">Continuer vos achats</a>
-        </div>
-    {% endif %}
+      </button>
+    </form>
+  </div>
+  {% else %}
+  <div class="alert alert-info text-center mt-5 fs-5" role="alert">
+    Votre panier est vide.
+    <a href="{% url 'index' %}" class="alert-link fw-semibold"
+      >Continuer vos achats</a
+    >
+  </div>
+  {% endif %}
 </section>
 
 <style>
-/* Un peu plus de padding dans les cellules pour respirer */
-table.table th, table.table td {
-    padding: 1rem 1.25rem;
-}
+  /* Padding généreux dans les cellules */
+  table.table th,
+  table.table td {
+    padding: 1rem 1.5rem;
+  }
 
-/* Bouton supprimer plus compact mais visible */
-.btn-outline-danger {
+  /* Ligne du tableau survolée avec fond léger */
+  .table-hover tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.1);
+    cursor: pointer;
+  }
+
+  /* Bouton supprimer compact mais clair */
+  .btn-outline-danger {
     transition: background-color 0.3s ease, color 0.3s ease;
-}
-.btn-outline-danger:hover {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.9rem;
+  }
+  .btn-outline-danger:hover {
     background-color: #dc3545;
     color: white;
-}
+  }
 
-/* Shadow léger sur bouton valider */
-.btn-success {
+  /* Bouton PayPal avec ombre subtile */
+  .btn-success {
     transition: box-shadow 0.3s ease;
-}
-.btn-success:hover {
+    border-radius: 0.5rem;
+  }
+  .btn-success:hover {
     box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
-}
+  }
 
-/* Responsive : scroll horizontal pour les petits écrans */
-@media (max-width: 576px) {
+  /* Responsive : scroll horizontal sur mobile */
+  @media (max-width: 576px) {
     .table-responsive {
-        overflow-x: auto;
+      overflow-x: auto;
     }
-}
+    /* Centrer bouton payer et largeur 100% sur mobile */
+    .btn-success {
+      width: 100%;
+      justify-content: center;
+    }
+  }
 </style>
 {% endblock %}

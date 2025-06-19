@@ -50,7 +50,7 @@ def modifier_produit(request, id):
         form = ProductForm(instance=produit)
     return render(request, 'shop/modifier_produit.html', {'form': form, 'produit': produit})
 
-# Supprimer un produit (réservé aux superusers)
+# Supprimer un produit avec confirmation
 @login_required
 @user_passes_test(is_superuser)
 def supprimer_produit(request, id):
@@ -59,7 +59,14 @@ def supprimer_produit(request, id):
         produit.delete()
         messages.success(request, "Produit supprimé avec succès.")
         return redirect('liste_produits')
-    return render(request, 'shop/confirmer_suppression.html', {'produit': produit})
+    return render(request, 'shop/confirm_delete.html', {'produit': produit})
+
+# Page de confirmation de suppression (optionnelle)
+@login_required
+@user_passes_test(is_superuser)
+def confirm_delete(request, id):
+    produit = get_object_or_404(Product, id=id)
+    return render(request, 'shop/confirm_delete.html', {'produit': produit})
 
 # Détail d'un produit
 def detail_produits(request, id):
@@ -95,15 +102,6 @@ def cart_detail(request):
         'total': total
     })
 
-# Produits par catégorie
-def produits_par_categorie(request, categorie_id):
-    categorie = get_object_or_404(Category, id=categorie_id)
-    produits = Product.objects.filter(category=categorie)
-    return render(request, 'shop/produits_par_categorie.html', {
-        'categorie': categorie,
-        'produits': produits
-    })
-
 # Ajouter un produit au panier
 def add_to_cart(request, product_id):
     cart = request.session.get('cart', {})
@@ -119,14 +117,23 @@ def remove_from_cart(request, product_id):
     request.session['cart'] = cart
     return redirect('cart_detail')
 
-# Ajouter un produit par un utilisateur (non superuser)
+# Produits par catégorie
+def produits_par_categorie(request, categorie_id):
+    categorie = get_object_or_404(Category, id=categorie_id)
+    produits = Product.objects.filter(category=categorie)
+    return render(request, 'shop/produits_par_categorie.html', {
+        'categorie': categorie,
+        'produits': produits
+    })
+
+# Ajouter un produit par un utilisateur connecté (non superuser)
 @login_required
 def ajouter_produit_utilisateur(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             produit = form.save(commit=False)
-            produit.user = request.user  # Ajoute l'utilisateur associé (si le modèle le prévoit)
+            produit.user = request.user  # si ton modèle a un champ user
             produit.save()
             messages.success(request, "Produit ajouté avec succès.")
             return redirect('liste_produits')
@@ -134,47 +141,27 @@ def ajouter_produit_utilisateur(request):
         form = ProductForm()
     return render(request, 'shop/ajouter_produit_utilisateur.html', {'form': form})
 
-# Connexion superuser
+# Connexion utilisateur
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        
+
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
             messages.success(request, f"Bienvenue {user.username} !")
-            return redirect('index')  # redirige vers la page d'accueil ou autre
+            return redirect('index')
         else:
             messages.error(request, "Nom d'utilisateur ou mot de passe incorrect.")
-    
     return render(request, 'shop/login.html')
 
- # Facultatif, peut juste renvoyer vers la liste
-@login_required
-def supprimer_produit(request, id):
-    produit = get_object_or_404(Product, id=id)
-    if request.method == 'POST':
-        produit.delete()
-        return redirect('liste_produits')
-    else:
-        return redirect('confirm_delete', id=id)  # Facultatif, peut juste renvoyer vers la liste
-
-
-    # Si GET, afficher la page de confirmation
-    return render(request, 'shop/confirm_delete.html', {'produit': produit})
-
-def confirm_delete(request, id):
-    produit = get_object_or_404(Product, id=id)
-    if request.method == 'POST':
-        produit.delete()
-        return redirect('liste_produits')
-    return render(request, 'shop/confirm_delete.html', {'produit': produit})
-
+# Confirmation d'achat
 def confirmation(request):
     if request.method == 'POST':
-        # Ici, tu peux simuler le traitement du paiement
-        # Ex: vider le panier, enregistrer une commande, etc.
+        # Simuler un paiement ou finaliser la commande ici
+        request.session['cart'] = {}
+        messages.success(request, "Merci pour votre achat ! Votre commande a été confirmée.")
         return render(request, 'shop/confirmation.html')
     else:
-        return redirect('panier') 
+        return redirect('cart_detail')
